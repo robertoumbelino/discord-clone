@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 
 import { Props } from '.'
 
@@ -16,30 +16,65 @@ export const Button = styled.button<Props>`
 
   margin-bottom: 8px;
 
-  background-color: ${(props) =>
-    props.isHome ? 'var(--rocketseat)' : 'var(--primary)'};
+  background-color: var(--primary);
+
+  ${({ imageUrl }) =>
+    imageUrl &&
+    css`
+      background-image: url(${imageUrl});
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    `};
 
   position: relative;
   cursor: pointer;
 
   > img {
-    width: 24px;
-    height: 24px;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+
+    transition: border-radius 0.2s;
+
+    &:hover {
+      border-radius: 16px;
+    }
   }
 
   &::before {
     width: 9px;
-    height: 9px;
 
     position: absolute;
     left: -17px;
-    top: calc(50% - 4.5px);
 
     background-color: var(--white);
-    border-radius: 50%;
 
     content: '';
-    display: ${(props) => (props.hasNotifications ? 'inline' : 'none')};
+
+    ${({ hasNotifications }) =>
+      hasNotifications &&
+      css`
+        height: 9px;
+
+        top: calc(50% - 4.5px);
+
+        border-radius: 50%;
+
+        display: inline;
+      `};
+
+    ${({ isHome }) =>
+      isHome &&
+      css`
+        height: 30px;
+
+        top: calc(50% - 15px);
+
+        border-radius: 25%;
+
+        display: inline;
+      `};
   }
 
   &::after {
@@ -61,9 +96,9 @@ export const Button = styled.button<Props>`
     font-weight: bold;
     color: var(--white);
 
-    content: '${(props) => props.mentions && props.mentions}';
-    display: ${(props) =>
-      props.mentions && props.mentions > 0 ? 'inline' : 'none'}
+    content: '${props => props.mentions && props.mentions}';
+    display: ${props =>
+      props.mentions && props.mentions > 0 ? 'inline' : 'none'};
   }
 
   transition: border-radius 0.2s, background-color 0.2s;
@@ -71,7 +106,6 @@ export const Button = styled.button<Props>`
   &.active,
   &:hover {
     border-radius: 16px;
-    background-color: ${(props) =>
-      props.isHome ? 'var(--rocketseat)' : 'var(--discord)'};
+    background-color: var(--discord);
   }
 `
